@@ -5,6 +5,7 @@
 	let timeFromLastLap;
 	var lapTime;
 	let lastLapTime;
+	let lapStringBox = "";
 	
 
 function restartOrStart(){
@@ -16,6 +17,8 @@ function restartOrStart(){
 	newTimeStr = "0".toString().padStart(6, '0');
 	newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
 	$('.time').text(newTimeStr);
+
+	$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`)
 	
 	console.log(numberOfLapes);
 }
@@ -139,5 +142,8 @@ $('#lapButton').on('click', function (e) {
 		console.log('lap');
 
 		console.log(timeFromLastLap,"lapTime");
+
+		lapStringBox = $(`#lapBox`).first().html();
+		console.log(lapStringBox);
 	}
 });
