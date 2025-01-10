@@ -1,0 +1,74 @@
+
+:root {
+  color-scheme: light dark;
+  
+}
+
+body {
+  font-family: Courier;
+  color: light-dark(#3f3f3f, #efefec);
+  background-color: light-dark(#efedea, #000000);
+}
+
+
+#TimeDisplay{
+  /* Puts the text in the middle */
+  text-align: center;
+  /* Add spaces all around */
+  margin: auto;
+  /* Add padding inside border */
+  width: 8%;
+  /* creates border */
+  border: 3px solid red;
+  /* keeps border from slicing the text */
+  min-width: min-content;
+
+  font-size: 80px;
+}
+
+#buttonBox{
+   
+  /* Puts the text in the middle */
+  text-align: center;
+  /* Add spaces all around */
+  margin: auto;
+  /* Add padding inside border */
+  width: 8%;
+  /* keeps border from slicing the text */
+  min-width: min-content;
+
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+hr{
+  padding: 0px;
+  margin:  0px;
+}
+
+#buttonBox > button{
+  border-radius: 50%;
+  width:  80px;
+  height: 80px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#lapButton{
+  margin-right: 100px;
+}
+
+#lapBox{
+  display: grid;
+  grid-template-columns: auto auto;
+  margin-inline: 10px;
+  overflow:hidden; 
+  overflow-y:scroll;
+  max-height:400px;
+}
+
+.LapDisplay{
+  font-size: 20px;
+  margin-left: 2px;
+}
+
