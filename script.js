@@ -1,14 +1,70 @@
 // golbal functions 
-	var TimeFromLastStarted;
-	var lastClockTime;
-	let numberOfLapes;
-	let timeFromLastLap;
-	var lapTime;
-	let lastLapTime;
-	let lapStringBox = "";
+var TimeFromLastStarted = 0;
+var lastClockTime = 0;
+let numberOfLapes = 0;
+let timeFromLastLap = 0;
+var lapTime = 0;
+let lastLapTime = 0;
+let lapStringBox = "";
+let cookieObj;
+
+function parseCookies() {
+  const cookies = document.cookie ? document.cookie.split(';') : [];
+  const cookieObj = {};
+  cookies.forEach(cookie => {
+    const parts = cookie.split('=');
+    cookieObj[parts.shift().trim()] = decodeURIComponent(parts.join('='));
+  });
+  return cookieObj;
+}
+
+
+
+function deleteAllCookies() {
+    document.cookie.split(';').forEach(cookie => {
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+        document.cookie = "cookiesExist=false; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT path=/";
+    });
+}
+
+
+function start(){
+	cookieObj = parseCookies();
+	console.log(cookieObj);
+
+	if(!cookieObj.cookiesExist){
+
+		lapTime = 0;
+		TimeFromLastStarted =  new Date();
+		numberOfLapes = 2;
+		lastClockTime = 0;
+		timeFromLastLap = 0;
+		newTimeStr = "0".toString().padStart(6, '0');
+		newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
+		$('.time').text(newTimeStr);
+		$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`)
+	
+	} else {
+		lapTime = cookieObj.lapTime;
+		TimeFromLastStarted = cookieObj.TimeFromLastStarted; 
+		numberOfLapes = cookieObj.numberOfLapes;
+		lastClockTime = cookieObj.lastClockTime;
+		timeFromLastLap = cookieObj.timeFromLastLap;
+		$('.time').text(cookieObj.MainTime);
+		$("#lapBox").html(cookieObj.LapBox);
+	}
+
+	console.log(numberOfLapes);
+
+
+	document.cookie = "cookiesExist=true; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+}
 	
 
-function restartOrStart(){
+function restart(){
+	deleteAllCookies();
+	console.log(cookieObj);
 	lapTime = 0;
 	TimeFromLastStarted =  new Date();
 	numberOfLapes = 2;
@@ -17,10 +73,17 @@ function restartOrStart(){
 	newTimeStr = "0".toString().padStart(6, '0');
 	newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
 	$('.time').text(newTimeStr);
-
 	$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`)
 	
-	console.log(numberOfLapes);
+	document.cookie = `lapTime=${lapTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `TimeFromLastStarted=${TimeFromLastStarted}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `numberOfLapes=${numberOfLapes}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `lastClockTime=${lastClockTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `timeFromLastLap=${timeFromLastLap}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `MainTime=${newTimeStr}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+	cookieObj = parseCookies();
+
 }
 
 function updateColock(){
@@ -66,25 +129,36 @@ function updateColock(){
 	
 
 	newTimeStr = timerNum.toString().padStart(6, '0');
-
 	newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
 
 	$('.time').text(newTimeStr);
-
-	// console.log(timePased,Date.now());
-
 	newLapTimestr = lapTime.toString().padStart(6, '0');
 
 	newLapTimestr = ""+newLapTimestr.slice(0,-4)+":"+newLapTimestr.slice(-4,-2)+"'"+newLapTimestr.slice(-2)+"''";
-
 	$('#LapTime').text(newLapTimestr);
 
+	// lapTime = 0;
+	// TimeFromLastStarted =  new Date();
+	// numberOfLapes = 2;
+	// lastClockTime = 0;
+	// timeFromLastLap = 0;
+	document.cookie = `lapTime=${lapTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `TimeFromLastStarted=${TimeFromLastStarted}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `numberOfLapes=${numberOfLapes}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `lastClockTime=${lastClockTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `timeFromLastLap=${timeFromLastLap}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `MainTime=${newTimeStr}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+	cookieObj = parseCookies();
 }
 
-$( document ).ready(function() {
-	restartOrStart();
-});
 
+
+$( document ).ready(function() {
+	start();
+	document.cookie = "cookiesExist=true; SameSite=None; Secure";
+	cookieObj = parseCookies();
+});
 
 $('#StartStopButton').on('click', function (e) {
 	e.preventDefault();
@@ -127,7 +201,7 @@ $('#StartStopButton').on('click', function (e) {
 $('#lapButton').on('click', function (e) {
 
 	if($(this).hasClass('clear_button')) {
-		restartOrStart();
+		restart();
 		console.log('clear');
 	}
 
