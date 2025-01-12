@@ -31,7 +31,6 @@ function deleteAllCookies() {
 
 function start(){
 	cookieObj = parseCookies();
-	console.log(cookieObj);
 
 	if(!cookieObj.cookiesExist){
 
@@ -55,16 +54,12 @@ function start(){
 		$("#lapBox").html(cookieObj.LapBox);
 	}
 
-	console.log(numberOfLapes);
-
-
 	document.cookie = "cookiesExist=true; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 }
 	
 
 function restart(){
 	deleteAllCookies();
-	console.log(cookieObj);
 	lapTime = 0;
 	TimeFromLastStarted =  new Date();
 	numberOfLapes = 2;
@@ -73,7 +68,8 @@ function restart(){
 	newTimeStr = "0".toString().padStart(6, '0');
 	newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
 	$('.time').text(newTimeStr);
-	$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`)
+	$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea1" rows="4" cols="50"></textarea>`)
+
 	
 	document.cookie = `lapTime=${lapTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 	document.cookie = `TimeFromLastStarted=${TimeFromLastStarted}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
@@ -83,8 +79,16 @@ function restart(){
 	document.cookie = `MainTime=${newTimeStr}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 	cookieObj = parseCookies();
-
 }
+
+setInterval(function() {
+  $("textarea").each(function(index, element) {
+    const $element = $(element); // Wrap the plain DOM element in a jQuery object
+    const text = $element.first().val(); // Get the value of the textarea
+    $element.text(text);         // Update the textarea text (if needed)
+  });
+  document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+}, 150);
 
 function updateColock(){
 
@@ -148,7 +152,7 @@ function updateColock(){
 	document.cookie = `lastClockTime=${lastClockTime}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 	document.cookie = `timeFromLastLap=${timeFromLastLap}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 	document.cookie = `MainTime=${newTimeStr}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
-	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 	cookieObj = parseCookies();
 }
 
@@ -207,15 +211,13 @@ $('#lapButton').on('click', function (e) {
 
 	if($(this).hasClass('Lap_button')) {
 		timeFromLastLap = lastLapTime;
-		console.log(timeFromLastLap);
+	
 		// Append the new div to the container
-		$("#lapBox").prepend(`<div class="LapDisplay" id="Lap">Lap:${numberOfLapes}-<span id="LapTime">00:00'00''</span></span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`);
+		$("#lapBox").prepend(`<div class="LapDisplay" id="Lap">Lap:${numberOfLapes}-<span id="LapTime">00:00'00''</span></span></div><textarea name="Boxtextarea" id="textarea${numberOfLapes}" rows="4" cols="50"></textarea>`);
 		
 		numberOfLapes++;
 		
 		console.log('lap');
-
-		console.log(timeFromLastLap,"lapTime");
 
 		lapStringBox = $(`#lapBox`).first().html();
 		console.log(lapStringBox);
