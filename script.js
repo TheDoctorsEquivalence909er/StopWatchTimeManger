@@ -123,11 +123,11 @@ function updateColock(){
 
 	
 
-	if(6000 < timerNum%10000){
+	if(6000 <= timerNum%10000){
 		timerNum += 4000;
 	}
 
-	if(6000 < lapTime%10000){
+	if(6000 <= lapTime%10000){
 		lapTime += 4000;
 	}
 	
