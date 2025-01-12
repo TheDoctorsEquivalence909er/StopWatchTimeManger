@@ -43,7 +43,7 @@ function start(){
 		newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
 		$('.time').text(newTimeStr);
 		$("#lapBox").html(`<div class="LapDisplay">Lap:1-<span id="LapTime">00:00'00''</span></div><textarea name="Boxtextarea" id="textarea0"></textarea>`)
-	
+		console.log(cookieObj);
 	} else {
 		lapTime = cookieObj.lapTime;
 		TimeFromLastStarted = cookieObj.TimeFromLastStarted; 
@@ -79,6 +79,8 @@ function restart(){
 	document.cookie = `MainTime=${newTimeStr}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
 	document.cookie = `LapBox=${encodeURIComponent($('#lapBox').first().html())}; SameSite=None; Secure; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 	cookieObj = parseCookies();
+
+	console.log(cookieObj);
 }
 
 setInterval(function() {
@@ -100,7 +102,7 @@ function updateColock(){
 
 	timerNum = parseInt(timerText,10);
 
-	timerNum = Math.trunc(timerNum/10000)*6000 + timerNum%10000;
+	
 
 	timerNum *= 10;
 
@@ -121,16 +123,13 @@ function updateColock(){
 
 	lapTime = Math.floor(lapTime/10);
 
-	
+	timerNum =  10000*Math.trunc(timerNum/6000) + timerNum%6000;
 
-	if(6000 <= timerNum%10000){
-		timerNum += 4000;
-	}
+	lapTime =  10000*Math.trunc(lapTime/6000) + lapTime%6000;
 
-	if(6000 <= lapTime%10000){
-		lapTime += 4000;
-	}
-	
+	console.log(timerNum,10000*Math.trunc(timerNum/6000) + timerNum%6000);
+
+
 
 	newTimeStr = timerNum.toString().padStart(6, '0');
 	newTimeStr = ""+newTimeStr.slice(0,-4)+":"+newTimeStr.slice(-4,-2)+"'"+newTimeStr.slice(-2)+"''";
