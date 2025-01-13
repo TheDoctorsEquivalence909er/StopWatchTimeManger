@@ -106,15 +106,15 @@ function updateColock(){
 
 	timerNum 		+= addTime;
 
-	lastClockTime 	= timerNum;
-
 	lapTime 		= timerNum-timeFromLastLap;
 
-	timerNum 		= Math.floor(timerNum*10);
-
-	lapTime 		= Math.floor(lapTime*10);
+	lastClockTime 	= timerNum;
 
 	lastLapTime 	= lapTime;
+
+	timerNum 		= Math.floor(timerNum/10);
+
+	lapTime 		= Math.floor(lapTime/10);
 
 	timerNum 		= 10000*Math.trunc(timerNum/6000) 		+ timerNum	%6000;
 	timerNum		= 1000000*Math.trunc(timerNum/600000)	+ timerNum	%600000;
