@@ -98,6 +98,9 @@ function updateColock(){
 
 	timerNum 		= parseInt(timerText,10);
 
+	timerNum 		= Math.trunc(timerNum/10000)*6000 		+ timerNum%10000;
+	timerNum		= Math.trunc(timerNum/1000000)*600000	+ timerNum	%600000;
+
 	timerNum 		*= 10;
 
 	timePased 		= Date.now()-TimeFromLastStarted;
@@ -197,7 +200,7 @@ $('#lapButton').on('click', function (e) {
 	}
 
 	if($(this).hasClass('Lap_button')) {
-		timeFromLastLap = lastLapTime;
+		timeFromLastLap += lastLapTime;
 	
 		// Append the new div to the container
 		$("#lapBox").prepend(`<div class="LapDisplay" id="Lap">(Lap:${numberOfLapes})<span id="LapTime">00:00:00'00''</span></span></div><textarea name="Boxtextarea" id="textarea${numberOfLapes}" rows="4" cols="50"></textarea>`);
